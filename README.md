@@ -3,5 +3,5 @@
 使用方法：
 首先定义xxxContract.java接口文件，打开文件右键找到Generate,选择MVPDataBind，如下所示：
 
-[使用方法]（https://github.com/NullRoutine/MVPDataBind/blob/master/img/GIF.gif）
+![使用方法](https://github.com/NullRoutine/MVPDataBind/blob/master/img/GIF.gif)
 
