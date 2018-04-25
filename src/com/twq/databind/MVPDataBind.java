@@ -50,33 +50,33 @@ public class MVPDataBind extends AnAction {
 //            className = fileName.substring(0, fileName.indexOf(".java"));//注意截取
             className = classModel.getFunctionName();
             myCurrentDir = javaFile.getContainingFile().getParent();
-            fileGenerator = new FileGenerator(e.getProject(), myCurrentDir, myCurrentDir, myCurrentDir, className);
+            fileGenerator = new FileGenerator(e.getProject(), className);
+            //生成Model文件
             fileGenerator.generateFile(myCurrentDir, className + "Model", JavaTemplateUtil.INTERNAL_CLASS_TEMPLATE_NAME, new FileGenerator.onFileGeneratedListener() {
                 @Override
                 public void onJavaFileGenerated(PsiJavaFile javaFile, PsiClass psiClass) {
                     PsiClass contractClass = fileGenerator.myShortNamesCache.getClassesByName(fileGenerator.myPrefix + "Contract", fileGenerator.myProjectScope)[0];
                     PsiClass model = contractClass.findInnerClassByName("Model", false);//don't need to search base
                     psiClass.getImplementsList().add(fileGenerator.myFactory.createClassReferenceElement(model));
-                    psiClass.getModifierList().setModifierProperty("public", true);//force 'public interface myPrefixContract'
+                    psiClass.getModifierList().setModifierProperty("public", true);//force
                 }
             });
+            //生成Presenter文件
             fileGenerator.generateFile(myCurrentDir, className + "Presenter", JavaTemplateUtil.INTERNAL_CLASS_TEMPLATE_NAME, new FileGenerator.onFileGeneratedListener() {
                 @Override
                 public void onJavaFileGenerated(PsiJavaFile javaFile, PsiClass psiClass) {
                     PsiClass contractClass = fileGenerator.myShortNamesCache.getClassesByName(fileGenerator.myPrefix + "Contract", fileGenerator.myProjectScope)[0];
                     PsiClass model = contractClass.findInnerClassByName("Presenter", false);//don't need to search base
                     psiClass.getExtendsList().add(fileGenerator.myFactory.createClassReferenceElement(model));
-                    psiClass.getModifierList().setModifierProperty("public", true);//force 'public interface myPrefixContract'
+                    psiClass.getModifierList().setModifierProperty("public", true);//force
                 }
             });
-//            try {
-//                createFileWithContract();
-//            } catch (Exception e1) {
-//                e1.printStackTrace();
-//            }
         }
     }
 
+    /**
+     * 通过文件读写的方式
+     */
     private void createFileWithContract() {
         ClassCreateHelper.createImplClass(e, this.getCurrentPath(this.e, this.classModel.getClassName()), this.packageName, 0, this.classModel);
         ClassCreateHelper.createImplClass(e, this.getCurrentPath(this.e, this.classModel.getClassName()), this.packageName, 1, this.classModel);

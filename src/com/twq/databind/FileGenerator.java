@@ -21,6 +21,15 @@ public class FileGenerator {
     protected PsiShortNamesCache myShortNamesCache;//used to search a class in particular scope
     protected GlobalSearchScope myProjectScope;//just this project is enough
 
+    FileGenerator(Project project, String prefix) {
+        this.myProject = project;
+        this.myPrefix = prefix;
+        myShortNamesCache = PsiShortNamesCache.getInstance(project);
+        myFactory = JavaPsiFacade.getElementFactory(project);
+        myDirectoryService = JavaDirectoryService.getInstance();
+        myProjectScope = GlobalSearchScope.projectScope(project);
+    }
+
     FileGenerator(Project project, PsiDirectory contractDir, PsiDirectory modelDir, PsiDirectory presenterDir, String prefix) {
         this.myProject = project;
         this.myContractDir = contractDir;
